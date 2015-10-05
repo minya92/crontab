@@ -8,18 +8,23 @@ git log -1 > ../../logs/"$name"_after.txt
 cd ../../logs
 commit=$(grep -f "$name"_before.txt "$name"_after.txt -o | grep 'commit' -o)
 T=$(date +%H:%M:%S)
-if [ "$commit" = "commit" ]
+if [ "$2" = "" ]
 then
-	state=$(/usr/bin/screen -ls|grep "$name" -o)
-	if [ "$state" = "$name" ]
+	if [ "$commit" = "commit" ]
 	then
-		echo "$T Running" >> /var/crontab/logs/"$name".log
+		state=$(/usr/bin/screen -ls|grep "$name" -o)
+		if [ "$state" = "$name" ]
+		then
+			echo "$T Running" >> /var/crontab/logs/"$name".log
+		else
+			echo "$T The server is turned off. Restarting" >> /var/crontab/logs/"$name".log
+			/usr/bin/screen -S "$name" -d -m /var/crontab/bin/"$name"-start
+		fi
 	else
-		echo "$T The server is turned off. Restarting" >> /var/crontab/logs/"$name".log
+		echo "$T New commit. Restarting" >> /var/crontab/logs/"$name".log
+		/usr/bin/screen -X -S "$name" quit
 		/usr/bin/screen -S "$name" -d -m /var/crontab/bin/"$name"-start
 	fi
 else
-	echo "$T New commit. Restarting" >> /var/crontab/logs/"$name".log
-	/usr/bin/screen -X -S "$name" quit
-	/usr/bin/screen -S "$name" -d -m /var/crontab/bin/"$name"-start
+	echo "$T Autostart disabled" >> /var/crontab/logs/"$name".log
 fi
