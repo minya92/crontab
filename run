@@ -1,0 +1,25 @@
+#!/bin/sh 
+name="$1"
+cd /var/www/"$name"/
+git log -1 > ../git/"$name"_pre.txt
+git fetch origin
+git pull
+git log -1 > ../git/"$name"_post.txt
+cd ../git
+commit=$(grep -f "$name"_post.txt "$name"_pre.txt -o | grep 'commit' -o)
+T=$(date +%H:%M:%S)
+if [ "$commit" = "commit" ]
+then
+	state=$(/usr/bin/screen -ls|grep "$name" -o)
+	if [ "$state" = "$name" ]
+	then
+		echo "$T Server work" >> /var/www/git/"$name".log
+	else
+		echo "$T Server closed!!! Up now" >> /var/www/git/"$name".log
+		/usr/bin/screen -S "$name" -d -m /var/www/cron/"$name"-start
+	fi
+else
+	echo "$T Restarting (new commit)" >> /var/www/git/"$name".log
+	/usr/bin/screen -X -S "$name" quit
+	/usr/bin/screen -S "$name" -d -m /var/www/cron/"$name"-start
+fi

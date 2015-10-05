@@ -1,0 +1,12 @@
+<pre>
+crontab -e
+
+select nano
+
+insert:
+
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+* * * * * /var/www/cron/run appName
+
+</pre>
