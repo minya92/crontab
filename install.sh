@@ -10,7 +10,5 @@ wget http://lapshina.net/crontab/testApp-start
 cd ../apps
 git clone https://github.com/minya92/crontab.git ./testApp
 cd ./testApp
-git fetch
-git pull
+/var/crontab/bin/run testApp
 echo "VISIT http://localhost:3333/"
-node server.js
