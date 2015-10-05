@@ -1,12 +1,14 @@
 #!/bin/sh 
-sudo apt-get install screen nano cron git
-sudo mkdir /var/crontab
-sudo mkdir /var/crontab/bin
-sudo mkdir /var/crontab/logs
-sudo mkdir /var/crontab/apps
+apt-get install screen nano cron git
+mkdir /var/crontab
+mkdir /var/crontab/bin
+mkdir /var/crontab/logs
+mkdir /var/crontab/apps
 cd /var/crontab/bin
 wget http://lapshina.net/crontab/run
 wget http://lapshina.net/crontab/testApp-start
+chmod 755 run
+chmod 755 testApp-start
 cd ../apps
 git clone https://github.com/minya92/crontab.git ./testApp
 cd ./testApp
