@@ -1,6 +1,6 @@
 #!/bin/sh 
 name="$1"
-cd /var/cronatb/apps/"$name"/
+cd /var/crontab/apps/"$name"/
 git log -1 > ../../logs/"$name"_before.txt
 git fetch origin
 git pull
@@ -13,13 +13,13 @@ then
 	state=$(/usr/bin/screen -ls|grep "$name" -o)
 	if [ "$state" = "$name" ]
 	then
-		echo "$T Running" >> /var/cronatb/logs/"$name".log
+		echo "$T Running" >> /var/crontab/logs/"$name".log
 	else
-		echo "$T The server is turned off. Restarting" >> /var/cronatb/logs/"$name".log
-		/usr/bin/screen -S "$name" -d -m /var/cronatb/bin/"$name"-start
+		echo "$T The server is turned off. Restarting" >> /var/crontab/logs/"$name".log
+		/usr/bin/screen -S "$name" -d -m /var/crontab/bin/"$name"-start
 	fi
 else
-	echo "$T New commit. Restarting" >> /var/cronatb/logs/"$name".log
+	echo "$T New commit. Restarting" >> /var/crontab/logs/"$name".log
 	/usr/bin/screen -X -S "$name" quit
-	/usr/bin/screen -S "$name" -d -m /var/cronatb/bin/"$name"-start
+	/usr/bin/screen -S "$name" -d -m /var/crontab/bin/"$name"-start
 fi
