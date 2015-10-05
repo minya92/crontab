@@ -8,8 +8,7 @@ cd /var/crontab/bin
 wget http://lapshina.net/crontab/run
 wget http://lapshina.net/crontab/testApp-start
 cd ../apps
-git clone https://github.com/minya92/crontab.git
-rename ./crontab ./testApp
+git clone https://github.com/minya92/crontab.git ./testApp
 cd ./testApp
 git fetch
 git pull
