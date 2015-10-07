@@ -15,7 +15,7 @@ then
 		state=$(/usr/bin/screen -ls|grep "$name" -o)
 		if [ "$state" = "$name" ]
 		then
-			echo "$T Running" >> /var/crontab/logs/"$name".log
+			echo "$T Running"
 		else
 			echo "$T The server is turned off. Restarting" >> /var/crontab/logs/"$name".log
 			/usr/bin/screen -S "$name" -d -m /var/crontab/bin/"$name"-start
